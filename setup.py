@@ -19,6 +19,6 @@ setup(
         'Development Status :: 1 - Planning',
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 2',
-        'License :: OSI Approved :: MIT License (MIT)'
+        'License :: OSI Approved :: MIT License'
     ],
 )
