@@ -31,7 +31,7 @@ class Client:
         return True
 
 
-    def response(self, entity, method, entityId=None, params=None, data=None):
+    def request(self, entity, method, entityId=None, params=None, data=None):
 
         if not self.logged_in:
             _loginResponse = self.login()
@@ -54,8 +54,8 @@ class Client:
 
 
     def ListAccounts(self, page=None, where=None, order=None):
-        return self.response('accounts', 'get')
+        return self.request('accounts', 'get')
 
 
     def RetrieveAccount(self, account_id):
-        return self.response('accounts', 'get', entityId=account_id)
+        return self.request('accounts', 'get', entityId=account_id)
