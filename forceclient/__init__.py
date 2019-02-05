@@ -1,10 +1,7 @@
 import requests
+from exceptions import AuthenticationError
 
 
-class AuthenticationError(Exception):
-    def __init__(self, message, errors):
-        super(ValidationError, self).__init__(message)
-        self.errors = errors
 
 class Client:
 
@@ -53,9 +50,39 @@ class Client:
         return response.json()
 
 
+    def ListWebHooks(self, page=None):
+        return self.response('hooks', 'get')
+
+
+    def CreateWebHook(self, action, entity, name, url, **kwargs):
+        payload = {"action": action, "entity": entity, "name": name, "url": url}
+        for key, value in kwargs.items():
+            payload[key] = value
+
+
     def ListAccounts(self, page=None, where=None, order=None):
         return self.request('accounts', 'get')
 
 
     def RetrieveAccount(self, account_id):
         return self.request('accounts', 'get', entityId=account_id)
+
+
+    def ListSales(self, page=None, where=None, order=None):
+        return self.request('sales', 'get')
+
+
+    def RetrieveSale(self, sale_id):
+        return self.request('sales', 'get', entityId=sale_id)
+
+
+    def ListSales(self, page=None, where=None, order=None):
+        return self.request('sales', 'get')
+
+
+    def RetrieveProduct(self, product_id):
+        return self.request('products', 'get', entityId=product_id)
+
+
+    def ListProducts(self, page=None, where=None, order=None):
+        return self.request('products', 'get')
