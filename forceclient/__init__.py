@@ -1,6 +1,6 @@
 import requests
 from exceptions import AuthenticationError
-
+import json
 
 
 class Client:
@@ -43,10 +43,12 @@ class Client:
                 url = '%s/%s/%s' % (self.base_url, entity, entityId)
             else:
                 url = '%s/%s' % (self.base_url, entity)
-
             response = requests.get(url, headers=self.headers, params=params)
         elif _method == "post":
-            response = requests.post('%s/%s' % (self.base_url, entity), headers=self.headers, data=json.dumps(json_payload), params=params)
+            response = requests.post('%s/%s' % (self.base_url, entity), headers=self.headers, data=json.dumps(json_payload))
+        elif _method == "put":
+            response = requests.put('%s/%s/%s' % (self.base_url, entity, entityId), headers=self.headers, data=json.dumps(json_payload))
+            #print response.url
         return response.json()
 
 
@@ -58,15 +60,21 @@ class Client:
         payload = {"action": action, "entity": entity, "name": name, "url": url}
         for key, value in kwargs.items():
             payload[key] = value
+        return self.request('hook', 'post', '')
 
 
     def ListAccounts(self, page=None, where=None, order=None):
-        return self.request('accounts', 'get')
+        return self.request('accounts', 'get', params={"where": where})
 
 
     def RetrieveAccount(self, account_id):
         return self.request('accounts', 'get', entityId=account_id)
 
+    def UpdateAccount(self, account_id, data):
+        return self.request('accounts', 'put', entityId=account_id, data=data)
+
+    def CreateAccount(self, data):
+        return self.request('accounts', 'post', data=data)
 
     def ListSales(self, page=None, where=None, order=None):
         return self.request('sales', 'get')
@@ -76,13 +84,17 @@ class Client:
         return self.request('sales', 'get', entityId=sale_id)
 
 
-    def ListSales(self, page=None, where=None, order=None):
-        return self.request('sales', 'get')
+    def ListProducts(self, page=None, where=None, order=None):
+        return self.request('products', 'get')
 
 
     def RetrieveProduct(self, product_id):
         return self.request('products', 'get', entityId=product_id)
 
 
-    def ListProducts(self, page=None, where=None, order=None):
-        return self.request('products', 'get')
+    def CreateProduct(self, model, **kwargs):
+        data = {"model": model,}
+        for key, value in kwargs.items():
+            data[key] = value
+
+        return self.request('products', 'post', data=data)
