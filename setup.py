@@ -12,7 +12,7 @@ setup(
     url='https://github.com/bingimar/ForceClient',
     download_url='https://github.com/bingimar/ForceClient.git',
     install_requires=[
-        'requests==2.21.0',
+        'requests==2.31.0',
     ],
     keywords=['forcemanager', 'api', 'wrapper'],
     classifiers=[
